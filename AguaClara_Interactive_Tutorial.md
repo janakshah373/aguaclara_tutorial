@@ -31,39 +31,61 @@ These questions are meant to test what you've learned from the Python Basics tut
 
 1. Write a conditional statement with 3 conditions: when x is 10, when x is 1, and when x is anything other than 1 or 10. For each condition, have your code print what the value is or isn't.
 
-<!--- Fill you answer here. --->
+```python
+if x == 10
+  print ('10')
+elif x == 1
+  print ('1')
+else
+  print ('Neither 1 nor 10')
+
+```
 
 
 
 
 2. Write a `for` loop that takes a variable with an initial value of 0, and adds the current index to the previous value of that variable (i.e. you variable should grow in size every iteration). Perform the iteration 20 times, and have the final value be printed at the end.
 
-<!--- Fill you answer here. --->
+```python
+j == 0
+k == 0
+for k in the range(20)
+  j = j + k
+  k = k + 1
+print('j')
 
-
-
-
-
-
-
+```
 
 
 3. Using the NumPy package and `unit_registry`, calculate the value of sin(4) meters, and use the sigfig function from the unit unit_registry module in aide_design to get your answer to 2 sig-figs. *(Hint: You will need to import these packages. Remember how to do that?)*
 
-<!--- Fill you answer here. --->
+```python
+import numpy;
+from aide_design.play import*
+y = np.sin(4)
+u.default_format = '.2f'
+print(y*u.m)
+
+```
 
 
 
 4. Create a `list` of length 5, and verify the length of your list. Once you've done that, turn your `list` into an `array` and apply units of meters to it. After that, create a 5x5 `array`, extract the middle row and middle column. Verify the size of your 2D `array` and apply units of liters to it.
 
-<!--- Fill you answer here. --->
+```python
+myList[0,1,2,3,4]
+len[myList]
+from aide_design.play import*
+myArray = np.array(myList)
+myArrayUnits = myArray * u.m
 
+my5Darray([0,1,2,3,4],[0,1,2,3,4],[0,1,2,3,4],[0,1,2,3,4],[0,1,2,3,4])
+my5Darray[:3]
+my5Darray[3,:]
 
-
-
-
-
-
+np.size(my5Darray)
+my5Darrayunits = my5Darray * u.L
+```
 
 
 5.  One of the most famous equations for a particle diffusing through a liquid at low Reynolds Number is the Stokes-Einstein Equation where k<sub>B</sub> is the Boltzmann constant, T is the temperature in Kelvin, eta is the dynamic viscosity in kg/(m*s), and r is the particle radius. Write a function that takes a temperature in Kelvin, a particle radius in meters, and a viscosity of water to calculate the diffusion coefficient D.
@@ -75,17 +97,41 @@ These questions are meant to test what you've learned from the Python Basics tut
 $$ D = \frac{k_BT}{6\pi\eta r} $$
 
 ```python
+from aide_design.play import*
 from scipy.constants import Boltzmann as kB_sc # I've imported the unitless value for kB from SciPy
 
 kB = kB_sc * u.joule / u.kelvin # I've given kB units for you in J/K; you can use the kB variable to give you Boltzmann's constant with units
 
-# Write your code here
+def Stokes(T, eta, r)
+  T = T * u.kelvin
+  eta = eta * u.kilogram/u.meter/u.second
+  r = r * u.meter
+  D = (kB * T)/(6*(np.pi)*eta*r).to_base_units()
+  return D
+
+Stokes(400, 0.0004, 0.1)
 
 ```
 
 6. You have a pipe with a radius of 0.2 m with water flowing in it at 2 m<sup>3</sup>/s. You want to see how the Reynolds Number changes as viscosity changes due to a change in temperature from 0 to 200<sup>o</sup>C. Create a plot of Reynolds Number against Temperature in Kelvin to show a relationship. Make sure your plot has a title, labeled axes, and axes grid. You can use functions from `physchem` like `pc.re_pipe` and `pc.viscosity_kinematic`. *(Hint: Make an array of temperatures to input into the `pc.viscosity_kinematic` function)*. Make sure to save you plot to your images folder in your personal repository, and display it below using `plt.show()` and a relative file path to the image.
 
-<!--- Fill you answer here. --->
+```python
+from aide_design.play import*
+Q = 2
+R = 0.2
+myTemp = np.array([273,323,373,423,473])
+area = np.pi * R * R
+velocity = Q/area
+plt.plot(myTemp, pc.re_pipe(velocity, 2*radius, pc.viscosity_kinematic(myTemp)))
+plt.xlabel('Temperature (K)')
+plt.ylabel('Reynolds Number')
+plt.title(Re vs T)
+plt.grid(which='major')
+plt.grid(which= 'minor')
+plt.savefig('/Users/Janak/github/aguaclara_tutorial/Images/Reynolds_Number.png')
+plt.show()
+
+```
 
 
 # GitHub Basics
